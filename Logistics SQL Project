@@ -27,3 +27,5 @@ WHERE quantity < (200 * 0.20);
 SELECT SUM(quantity) AS total_items_in_warehouse
 FROM Warehouse_stock;
 
+SELECT AVG(price) AS average_product_price
+FROM Warehouse_stock;
