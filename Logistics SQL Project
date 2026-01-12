@@ -14,4 +14,16 @@ VALUES
 (103, 'Essential Oil Kit' , 'Personal Care', 210.00, 45, 'A-15');
 
 SELECT product_name, (price * quantity) AS total_stock_value
-FROM Warehous_stock
+FROM Warehouse_stock;
+
+SELECT product_name, price, shelf_location
+FROM Warehouse_stock
+WHERE shelf_location LIKE 'A%' AND price > 50;
+
+SELECT product_name, quantity, shelf_location
+FROM Warehouse_stock
+WHERE quantity < (200 * 0.20);
+
+SELECT SUM(quantity) AS total_items_in_warehouse
+FROM Warehouse_stock;
+
