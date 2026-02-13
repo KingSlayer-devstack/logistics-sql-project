@@ -29,3 +29,10 @@ FROM Warehouse_stock;
 
 SELECT AVG(price) AS average_product_price
 FROM Warehouse_stock;
+
+-- This query shows the total items and total value for each category
+SELECT category, SUM(quantity) AS total_items, SUM(price * quantity) AS total_value
+FROM Warehouse_stock
+GROUP BY category;
+
+
