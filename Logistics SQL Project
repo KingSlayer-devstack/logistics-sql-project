@@ -1,3 +1,7 @@
+IF OBJECT_ID('Warehouse_stock', 'U') IS NOT NULL
+    DROP TABLE Warehouse_stock;
+GO
+
 CREATE TABLE Warehouse_stock (
 product_id INT PRIMARY KEY,
 product_name VARCHAR(100),
@@ -52,4 +56,5 @@ SELECT category,
 FROM Warehouse_stock
 GROUP BY category
 HAVING SUM(price * quantity) > 500;
+
 
