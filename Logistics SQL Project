@@ -97,3 +97,25 @@ FROM Warehouse_stock P
 INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
 WHERE T.movement_type = 'OUT'
 GROUP BY P.product_name;
+
+IF OBJECT_ID('vw_LowStockAlerts', 'V') IS NOT NULL
+    DROP VIEW vw_LowStockAlerts;
+GO
+
+CREATE VIEW vw_LowStockAlerts AS
+SELECT 
+    product_id,
+    product_name,
+    category,
+    quantity AS current_stock,
+    shelf_location,
+    CASE 
+        WHEN quantity = 0 THEN 'OUT OF STOCK'
+        ELSE 'REORDER IMMEDIATELY'
+    END AS priority_level
+FROM Warehouse_stock
+WHERE quantity < 20;
+GO
+
+SELECT * FROM vw_LowStockAlerts
+ORDER BY current_stock ASC;
