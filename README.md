@@ -61,3 +61,27 @@ Execution: Run the full .sql script. It handles the cleanup automatically.
 Verification: Check the "Results" tab to view the stock_status and financial KPIs.
 
 Tools used: SQL Server, GitHub, T-SQL.
+
+## 🚀 Phase 2: Relational Data & Transaction Tracking
+In this phase, I transitioned the project from a static inventory list to a **Relational Database System**. By introducing a second table, I can now track the flow of goods in and out of the warehouse.
+
+### 🛠️ New Technical Features
+* **Relational Mapping:** Established a **One-to-Many** relationship between products and movements.
+* **Foreign Keys:** Implemented referential integrity to ensure transaction data always matches an existing product ID.
+* **Data Normalization:** Kept product details (price, category) separate from movement details (date, type) to reduce redundancy.
+* **Complex Joins (`INNER JOIN`):** Connected the inventory and transaction tables to generate detailed operational reports.
+
+### 📊 Business Logic: Movement History
+This query allows a manager to see a complete audit trail of who moved what, when, and for which brand (Natura or Portobello):
+
+```sql
+SELECT 
+    P.product_name, 
+    T.movement_type, 
+    T.quantity_changed, 
+    T.transaction_date
+FROM Warehouse_stock P
+INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
+ORDER BY T.transaction_date DESC;
+
+
