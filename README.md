@@ -12,7 +12,12 @@ The goal is to manage warehouse inventory, monitor stock levels for Brazilian in
 * **Financial Aggregation (`SUM`, `AVG`):** Calculating total inventory value and average product costs.
 * **Business Intelligence Filtering (`HAVING`):** Isolating high-value categories for risk management.
 * **Pattern Matching (`LIKE`):** Organizing audits based on specific shelf locations.
-
+* **Relational Mapping:** Established a **One-to-Many** relationship between products and movements.
+* **Foreign Keys:** Implemented referential integrity to ensure transaction data always matches an existing product ID.
+* **Data Normalization:** Kept product details (price, category) separate from movement details (date, type) to reduce redundancy.
+* **Complex Joins (`INNER JOIN`):** Connected the inventory and transaction tables to generate detailed operational reports.
+* **Database Abstraction (Views):** Created vw_LowStockAlerts to provide an instant, real-time dashboard for procurement teams, isolating critical stock-outs from the general inventory
+  
 
 
 ## 📊 Business Logic Examples
@@ -64,12 +69,6 @@ Tools used: SQL Server, GitHub, T-SQL.
 
 ## 🚀 Phase 2: Relational Data & Transaction Tracking
 In this phase, I transitioned the project from a static inventory list to a **Relational Database System**. By introducing a second table, I can now track the flow of goods in and out of the warehouse.
-
-### 🛠️ New Technical Features
-* **Relational Mapping:** Established a **One-to-Many** relationship between products and movements.
-* **Foreign Keys:** Implemented referential integrity to ensure transaction data always matches an existing product ID.
-* **Data Normalization:** Kept product details (price, category) separate from movement details (date, type) to reduce redundancy.
-* **Complex Joins (`INNER JOIN`):** Connected the inventory and transaction tables to generate detailed operational reports.
 
 ### 📊 Business Logic: Movement History
 This query allows a manager to see a complete audit trail of who moved what, when, and for which brand (Natura or Portobello):
