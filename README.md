@@ -111,5 +111,54 @@ Instead of manual updates, the warehouse now uses a single command to process or
 -- Example of processing a shipment of 10 units
 EXEC sp_ProcessShipment @ProdID = 101, @Qty = 10;
 ```
+# 📦 Warehouse_stock: Operational Logistics Database
+**From the Warehouse Floor to Data Analytics**
 
+## 🎯 Project Overview
+This project is a technical implementation of a **Warehouse Management System (WMS)** built in SQL Server. It transitionally moves from basic data storage to a fully automated, relational system designed to solve real-world inventory inaccuracies.
+
+> "Performance problems are rarely 'mysterious.' They are measurable, traceable, and fixable when a team has the right data." — *Statement of Purpose, Joao Vitor*
+
+## 👤 About the Author
+With over two years of experience in high-volume logistics centers in Brazil (including **Natura**, **Portobello**, and **Mercado Livre**), I have seen firsthand how inventory errors impact the bottom line. This project serves as a bridge between my operational background and my future as a **Data Analyst in Canada**.
+
+---
+
+## 🏗️ Technical Architecture
+The project is divided into four strategic phases that demonstrate a progression in database development skills:
+
+### **Phase 1: Foundation & Static Inventory**
+* **Goal:** Structure core inventory data.
+* **Skills:** DDL (Data Definition), DML (Data Manipulation), and Aggregate Functions.
+
+### **Phase 2: Relational Movement & Traceability**
+* **Goal:** Move beyond static lists to track every 'IN' and 'OUT' movement.
+* **Skills:** Foreign Keys, One-to-Many relationships, and complex **INNER JOINs**.
+
+### **Phase 3: Automation & Performance**
+* **Goal:** Reduce manual workload for warehouse managers.
+* **Features:** * `vw_LowStockAlerts`: A real-time dashboard for procurement.
+    * `sp_ProcessShipment`: A stored procedure that automates outbound orders while maintaining data integrity.
+
+### **Phase 4: Data Integrity & Business Logic**
+* **Goal:** Prevent human error at the database level.
+* **Skills:** `CHECK Constraints` to ensure zero negative stock or invalid pricing.
+
+---
+
+## 🛠️ Business Logic Highlights
+### **Preventing "Ghost Stock"**
+By implementing a hierarchical cleanup and strict constraints, this system ensures that:
+1. **No Negative Inventory:** It is physically impossible to ship more than what is on the shelf.
+2. **Audit Trails:** Every movement is recorded with a timestamp, providing a 100% transparent audit history.
+
+## 🚀 How to Run
+1. Open **SQL Server Management Studio (SSMS)**.
+2. Copy the full script from `warehouse_stock.sql`.
+3. Execute. The script is **idempotent** (can be run multiple times without errors).
+
+---
+
+## 🇨🇦 Career Objective
+I am currently applying for **Data Analytics programs in Canada (January 2027)**. My goal is to apply my Brazilian logistics expertise to the Canadian supply chain, utilizing advanced data modeling to drive operational excellence.
 
