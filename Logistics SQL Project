@@ -57,4 +57,43 @@ FROM Warehouse_stock
 GROUP BY category
 HAVING SUM(price * quantity) > 500;
 
+IF OBJECT_ID('Stock_Transactions', 'U') IS NOT NULL
+    DROP TABLE Stock_Transactions;
+GO
 
+CREATE TABLE Stock_Transactions (
+    transaction_id INT PRIMARY KEY IDENTITY(1,1),
+    product_id INT, -- This connects to Warehouse_stock
+    movement_type VARCHAR(10), -- 'IN' (Restock) or 'OUT' (Picking)
+    quantity_changed INT,
+    transaction_date DATETIME DEFAULT GETDATE(),
+    -- The Foreign Key ensures we can't record a movement for a product that doesn't exist
+    FOREIGN KEY (product_id) REFERENCES Warehouse_stock(product_id)
+);
+GO
+
+INSERT INTO Stock_Transactions (product_id, movement_type, quantity_changed)
+VALUES 
+(101, 'OUT', 15),
+(102, 'IN', 100), 
+(103, 'OUT', 5);  
+GO
+
+SELECT 
+    T.transaction_id,
+    P.product_name,
+    P.category,
+    T.movement_type,
+    T.quantity_changed,
+    T.transaction_date
+FROM Warehouse_stock P
+INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
+ORDER BY T.transaction_date DESC;
+
+SELECT 
+    P.product_name,
+    SUM(T.quantity_changed) AS total_units_shipped
+FROM Warehouse_stock P
+INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
+WHERE T.movement_type = 'OUT'
+GROUP BY P.product_name;
