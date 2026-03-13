@@ -24,7 +24,7 @@ The goal is to manage warehouse inventory, monitor stock levels for Brazilian in
 
 ### 1. Stock Status Monitoring
 Using a `CASE` statement, the system provides real-time alerts on inventory health to prevent stockouts:
-``sql
+```sql
 
 SELECT product_name, quantity,
        CASE 
@@ -32,16 +32,18 @@ SELECT product_name, quantity,
            WHEN quantity < 20 THEN 'CRITICAL'
            ELSE 'OK'
        END AS stock_status
-FROM Warehouse_stock;
+FROM Warehouse_stock; 
 
- ## 2. Category Financial Analysis
+ ```
+## 2. Category Financial Analysis
 This query identifies which product categories hold the most capital, assisting in insurance and security planning:
-
+```
 SELECT category, SUM(price * quantity) AS total_value
 FROM Warehouse_stock
 GROUP BY category
 HAVING SUM(price * quantity) > 500;
 
+```
  ## Troubleshooting: Handling "Object Already Exists"
 
 During development in SQL Server Management Studio (SSMS), I encountered the following error:
@@ -81,7 +83,33 @@ SELECT
     T.transaction_date
 FROM Warehouse_stock P
 INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
-ORDER BY T.transaction_date DESC;
+ORDER BY T.transaction_date DESC; ****
+```
 
+## 🔧 Troubleshooting: Foreign Key Constraints
+As the project evolved into a relational system, I encountered a dependency error:
+`Msg 3726: Could not drop object 'Warehouse_stock' because it is referenced by a FOREIGN KEY constraint.`
+
+### How I resolved it:
+I implemented a **Hierarchical Cleanup Strategy**. In a relational database, you cannot delete a "Parent" table if a "Child" table still points to it. I updated the script to drop objects in the reverse order of their dependencies:
+1. Drop **Stored Procedures** and **Views**.
+2. Drop the **Child Table** (`Stock_Transactions`).
+3. Drop the **Parent Table** (`Warehouse_stock`).
+
+## 🤖 Phase 3: Performance & Automation
+This phase focuses on making the database "intelligent" by automating common warehouse tasks.
+
+### 🛠️ New Technical Features 
+* **Database Views:** Created `vw_LowStockAlerts` to act as a real-time dashboard for procurement.
+* **Stored Procedures:** Developed `sp_ProcessShipment` to handle outbound orders.
+* **Procedural Logic:** Used `IF/ELSE` blocks within SQL to validate stock levels before allowing a transaction to complete.
+
+### 📊 Business Logic: Automated Shipping
+Instead of manual updates, the warehouse now uses a single command to process orders. This ensures that the inventory count and the transaction history are always synchronized:
+
+```sql
+-- Example of processing a shipment of 10 units
+EXEC sp_ProcessShipment @ProdID = 101, @Qty = 10;
+```
 
 
