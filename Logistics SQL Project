@@ -1,46 +1,58 @@
+IF OBJECT_ID('Stock_Transactions', 'U') IS NOT NULL
+    DROP TABLE Stock_Transactions;
+GO
+
 IF OBJECT_ID('Warehouse_stock', 'U') IS NOT NULL
     DROP TABLE Warehouse_stock;
 GO
 
+IF OBJECT_ID('vw_LowStockAlerts', 'V') IS NOT NULL
+    DROP VIEW vw_LowStockAlerts;
+GO
+
+IF OBJECT_ID('sp_ProcessShipment', 'P') IS NOT NULL
+    DROP PROCEDURE sp_ProcessShipment;
+GO
+
 CREATE TABLE Warehouse_stock (
-product_id INT PRIMARY KEY,
-product_name VARCHAR(100),
-category VARCHAR(50),
-price DECIMAL(10, 2),
-quantity INT,
-shelf_location VARCHAR(10)
+ product_id INT PRIMARY KEY,
+ product_name VARCHAR(100),
+ category VARCHAR(50),
+ price DECIMAL(10, 2),
+ quantity INT,
+ shelf_location VARCHAR(10)
 );
 
 INSERT INTO Warehouse_stock (product_id, product_name, category, price, quantity, shelf_location)
 VALUES
-(101, 'Natura Ekos Soap' , 'Personal Care', 25.00, 150, 'A-12'),
-(102, 'Portobello Tile Grey' , 'Construction', 120.00 , 0, 'B-05'),
-(103, 'Essential Oil Kit' , 'Personal Care', 210.00, 45, 'A-15');
+ (101, 'Natura Ekos Soap' , 'Personal Care', 25.00, 150, 'A-12'),
+ (102, 'Portobello Tile Grey' , 'Construction', 120.00 , 0, 'B-05'),
+ (103, 'Essential Oil Kit' , 'Personal Care', 210.00, 45, 'A-15');
 
 SELECT product_name, (price * quantity) AS total_stock_value
 FROM Warehouse_stock;
 
 SELECT product_name, price, shelf_location
-FROM Warehouse_stock
-WHERE shelf_location LIKE 'A%' AND price > 50;
+ FROM Warehouse_stock
+ WHERE shelf_location LIKE 'A%' AND price > 50;
 
 SELECT product_name, quantity, shelf_location
-FROM Warehouse_stock
-WHERE quantity < (200 * 0.20);
+ FROM Warehouse_stock
+ WHERE quantity < (200 * 0.20);
 
 SELECT SUM(quantity) AS total_items_in_warehouse
-FROM Warehouse_stock;
+ FROM Warehouse_stock;
 
 SELECT AVG(price) AS average_product_price
-FROM Warehouse_stock;
+ FROM Warehouse_stock;
 
 SELECT category, SUM(quantity) AS total_items, SUM(price * quantity) AS total_value
-FROM Warehouse_stock
-GROUP BY category;
+ FROM Warehouse_stock
+ GROUP BY category;
 
 SELECT product_name, category, shelf_location
-FROM Warehouse_stock
-WHERE quantity = 0;
+ FROM Warehouse_stock
+ WHERE quantity = 0;
 
 SELECT product_name, quantity,
        CASE 
@@ -53,9 +65,9 @@ FROM Warehouse_stock;
 SELECT category, 
        SUM(quantity) AS total_items, 
        SUM(price * quantity) AS total_value
-FROM Warehouse_stock
-GROUP BY category
-HAVING SUM(price * quantity) > 500;
+ FROM Warehouse_stock
+ GROUP BY category
+ HAVING SUM(price * quantity) > 500;
 
 IF OBJECT_ID('Stock_Transactions', 'U') IS NOT NULL
     DROP TABLE Stock_Transactions;
@@ -119,3 +131,35 @@ GO
 
 SELECT * FROM vw_LowStockAlerts
 ORDER BY current_stock ASC;
+
+IF OBJECT_ID('sp_ProcessShipment', 'P') IS NOT NULL
+    DROP PROCEDURE sp_ProcessShipment;
+GO
+
+CREATE PROCEDURE sp_ProcessShipment
+    @ProdID INT,
+    @Qty INT
+AS
+BEGIN
+
+IF (SELECT quantity FROM Warehouse_stock WHERE product_id = @ProdID) >= @Qty
+    BEGIN
+UPDATE Warehouse_stock
+        SET quantity = quantity - @Qty
+        WHERE product_id = @ProdID;
+
+INSERT INTO Stock_Transactions (product_id, movement_type, quantity_changed)
+        VALUES (@ProdID, 'OUT', @Qty);
+
+        PRINT 'Shipment processed successfully, eh!';
+    END
+    ELSE
+    BEGIN
+        PRINT 'Error: Not enough stock for this shipment.';
+    END
+END
+GO
+
+EXEC sp_ProcessShipment @ProdID = 101, @Qty = 10;
+
+SELECT * FROM vw_LowStockAlerts;
