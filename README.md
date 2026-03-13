@@ -84,3 +84,4 @@ INNER JOIN Stock_Transactions T ON P.product_id = T.product_id
 ORDER BY T.transaction_date DESC;
 
 
+
