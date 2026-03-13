@@ -161,4 +161,4 @@ By implementing a hierarchical cleanup and strict constraints, this system ensur
 
 ## 🇨🇦 Career Objective
 I am currently applying for **Data Analytics programs in Canada (January 2027)**. My goal is to apply my Brazilian logistics expertise to the Canadian supply chain, utilizing advanced data modeling to drive operational excellence.
-
+Bridging the gap between the warehouse floor and data analytics. A SQL-based logistics system featuring automated inventory tracking and data integrity constraints, inspired by professional experience at Mercado Livre and Natura.
