@@ -18,7 +18,7 @@ Stock Health Dashboards: Views created to show low-stock alerts and "Slow Moving
 🛠️ Tech Stack
 Language: SQL (PostgreSQL / MySQL)
 
-Tools: [Insert tool you used, e.g., MySQL Workbench, DBeaver, or pgAdmin]
+Tools: SQL Server 22, Github, Mimo App.
 
 Logic: Joins, Subqueries, CTEs (Common Table Expressions), and Views.
 
