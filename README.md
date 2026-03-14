@@ -1,5 +1,6 @@
 Warehouse_stock: Inventory Monitoring & Automation
 Bridging the gap between warehouse operations and data-driven solutions.
+
 📌 Project Overview
 In industrial logistics, "ghost positions" and manual reconciliation errors lead to significant revenue loss. This project is a Relational SQL Database designed to simulate a high-volume warehouse environment. It automates inventory monitoring, identifies stock discrepancies, and provides real-time alerts for operational inefficiencies.
 
