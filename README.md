@@ -57,7 +57,5 @@ Linkedin: www.linkedin.com/in/kingslayer-devstack
 
 E-mail: joaovitormourapinheiro@gmail.com
 
-Vision: Honours Bachelor of Data Science & Analytics Candidate (York University).
-
 
 Goal: To transform global logistics operations through data-driven leadership.
